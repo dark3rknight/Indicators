@@ -1,9 +1,9 @@
 import math
 
 def sma(data, window):
-        if len(data) < window:
-            return None
-        return sum(data[-window:]) / float(window)
+    if len(data) < window:
+        return 0
+    return sum(data[-window:])/float(window)
 
 def calc_ema(data, window):
     if len(data) <= 2 * window:
@@ -15,7 +15,7 @@ def calc_ema(data, window):
     return current_ema
 
 def get_all_EMAs(data, window):
-    EMA = [None] * ((window))
+    EMA = [0] * ((window))
     for i in range(window, len(data)):
         EMA.append(calc_ema(data[:i], window))
     return EMA
