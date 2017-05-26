@@ -12,7 +12,9 @@ def multiAxis_LabeledPlot(vals1, label1, vals2 = None, label2 = None, vals3 = No
     if vals4 != None:
         ax4 = ax1.twinx()
         ax4.plot(vals4, color = 'salmon', linewidth = 0.6, label = label4)
+    ax1.grid(True)
     ax1.legend()
+    plt.legend()
     plt.show()
 
 def multiAxisplot(vals1, vals2 = None, vals3 = None, vals4 = None):

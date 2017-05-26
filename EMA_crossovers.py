@@ -1,7 +1,7 @@
 import os
 import math
 import pandas as pd
-from Exponential_Moving_Averages import *
+from Moving_Averages import *
 from dataPlot import *
 
 def ema_crossovers(pricelist, period1, period2):
