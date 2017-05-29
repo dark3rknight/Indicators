@@ -53,7 +53,7 @@ def adx(pricelist,high,low,smoothening_factor):
 	multi_subPlot(pricelist,'price',DI_pos,'+DI',DI_neg,'-DI',ADX,'ADX')
 	return ADX
 
-read = pd.read_csv('./RTD_test.csv')
+read = pd.read_csv('../RTD_test.csv')
 pricelist = list(read.CLOSE)
 high = list(read.HIGH)
 low = list(read.LOW)

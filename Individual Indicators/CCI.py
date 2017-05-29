@@ -22,7 +22,7 @@ def cci(pricelist,high,low,period,number_sigma):
 	print(len(CCI))
 	multi_subPlot(pricelist,'price',CCI,'CCI')
 
-read = pd.read_csv('./RTD_test.csv')
+read = pd.read_csv('../RTD_test.csv')
 pricelist = list(read.CLOSE)
 high = list(read.HIGH)
 low = list(read.LOW)

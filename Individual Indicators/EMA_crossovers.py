@@ -26,7 +26,7 @@ def ema_crossovers(pricelist, period1, period2):
     multiAxis_LabeledPlot(pricelist,'price',ema[0],str(ema_period[0])+" ema",ema[1],str(ema_period[1])+" ema",trend,'indicator')
     return trend
 
-path = './RTD_test.csv'
+path = '../RTD_test.csv'
 read = pd.read_csv(path)
 close = list(read.CLOSE)
 indicator = ema_crossovers(close[-500:],13,48)

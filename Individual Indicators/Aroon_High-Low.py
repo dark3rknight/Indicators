@@ -17,7 +17,7 @@ def aroon_up_down(pricelist,high,low,aroon_period):
 	multi_subPlot(pricelist,'price',aroon_up,'AROON_UP',aroon_down,'AROON_DOWN',aroon_oscillator,'AROON_OSCILLATOR')
 	return aroon_oscillator
 	
-read = pd.read_csv('./RTD_test.csv')
+read = pd.read_csv('../RTD_test.csv')
 pricelist = list(read.CLOSE)
 high = list(read.HIGH)
 low = list(read.LOW)

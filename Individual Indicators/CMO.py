@@ -20,7 +20,7 @@ def Chande_Momentum_Oscillator(pricelist, period):
     multi_subPlot(pricelist,'price',cmo,'cmo')
     return cmo
 
-path = './RTD_test.csv'
+path = '../RTD_test.csv'
 read = pd.read_csv(path)
 close = list(read.CLOSE)
 indicator = Chande_Momentum_Oscillator(close[-500:], 30)

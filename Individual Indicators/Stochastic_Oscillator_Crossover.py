@@ -19,7 +19,7 @@ def stochastic(pricelist,high,low,period,fast_smoothening_factor,slow_smoothenin
 	multi_subPlot(pricelist,'price',fastkArray,'Fast %K',fastdArray,'Fast %D',slowdArray,'Slow %D')
 	return fastdArray
 
-read = pd.read_csv('./RTD_test.csv')
+read = pd.read_csv('../RTD_test.csv')
 pricelist = list(read.CLOSE)
 high = list(read.HIGH)
 low = list(read.LOW)

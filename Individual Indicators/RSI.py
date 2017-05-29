@@ -42,7 +42,7 @@ def Stock_RSI(pricelist,period):
         stochrsi.append((rsi[i] - min(rsi[i-period+1:i+1]))/(max(rsi[i-period+1:i+1])-min(rsi[i-period+1:i+1]))*100)
     multi_subPlot(pricelist,'price',stochrsi,'stoch_rsi')
     
-path = './RTD_test.csv'
+path = '../RTD_test.csv'
 read = pd.read_csv(path)
 close = list(read.CLOSE)
 indicator = Stock_RSI(close[-500:], 30)
