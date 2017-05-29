@@ -16,8 +16,9 @@ def bollinger(pricelist,period,number_sigma):
 		upper_band.append(current_sma + number_sigma*np.std(pricelist[i-period+1:i+1]))
 		lower_band.append(current_sma - number_sigma*np.std(pricelist[i-period+1:i+1]))
 	multiplePlots(pricelist,'price',middle,str(period)+' sma',upper_band,None,lower_band)
+	return middle
 
 read = pd.read_csv('../RTD_test.csv')
 pricelist = list(read.CLOSE)
-bollinger(pricelist[-500:],20,2)
+sma = bollinger(pricelist[-500:],20,2)
 
