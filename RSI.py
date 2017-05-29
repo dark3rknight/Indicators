@@ -35,7 +35,14 @@ def Relative_Strength_Index(pricelist, period):
     multi_subPlot(pricelist,'price',rsi,'rsi')
     return rsi
 
+def Stock_RSI(pricelist,period):
+    rsi = Relative_Strength_Index(pricelist,period)
+    stochrsi = [None]*(2*period-1)
+    for i in range(2*period-1,len(rsi)):
+        stochrsi.append((rsi[i] - min(rsi[i-period+1:i+1]))/(max(rsi[i-period+1:i+1])-min(rsi[i-period+1:i+1]))*100)
+    multi_subPlot(pricelist,'price',stochrsi,'stoch_rsi')
+    
 path = './RTD_test.csv'
 read = pd.read_csv(path)
 close = list(read.CLOSE)
-indicator = Relative_Strength_Index(close[-500:], 30)
+indicator = Stock_RSI(close[-500:], 30)
