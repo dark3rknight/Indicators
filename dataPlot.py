@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 
+
 def multi_subPlot( vals1, label1, vals2, label2, vals3 = None, label3 = None, vals4 = None, label4 = None):
     fig = plt.figure()
 
@@ -16,7 +17,7 @@ def multi_subPlot( vals1, label1, vals2, label2, vals3 = None, label3 = None, va
         ax3.grid(True)
         ax3.legend()
     
-    ax1.grid(True   )
+    ax1.grid(True)
     ax2.grid(True)
    
     ax1.legend()
