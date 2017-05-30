@@ -12,9 +12,6 @@ def is_number(s):
 def data_cleaning(tValue,date,time,popen,high,low,close):
 	date.reverse()
 	time.reverse()
-	popen.reverse()
-	high.reverse()
-	low.reverse()
 	close.reverse()
 	previous_date = date[0]
 	formatted_open = []
@@ -34,8 +31,8 @@ def data_cleaning(tValue,date,time,popen,high,low,close):
 			maximum = high[i]
 			minimum = low[i]
 			for j in range(tValue):
-				maximum = max(high[i+j],maximum)
-				minimum = min(low[i+j],minimum)
+				maximum = max(close[i+j],maximum)
+				minimum = min(close[i+j],minimum)
 				flag = flag + 1
 			counter = i + flag
 			formatted_date.append(date[counter - 1])
@@ -48,11 +45,11 @@ def data_cleaning(tValue,date,time,popen,high,low,close):
 		returns.append(ret)
 		logreturns.append(math.log(1+ret))
 	rows = zip(formatted_date,formatted_time,formatted_open,formatted_high,formatted_low,formatted_close,returns,logreturns)
-	with open('RTD_test.csv', 'w+') as f:
+	with open('RTD_test_EICHER.csv', 'w+') as f:
 		writer = csv.writer(f)
 		writer.writerow(['DATE','TIME','OPEN','HIGH','LOW','CLOSE','RETURNS','LOGRETURNS'])
 		writer.writerows(rows)
 
-read = pd.read_csv('./AXISBANK.csv')
+read = pd.read_csv('./NSE EICHERMOT EQ.csv')
 	
 data_cleaning(30,list(read.DATE),list(read.TIME),list(read.OPEN),list(read.HIGH),list(read.LOW),list(read.CLOSE))
