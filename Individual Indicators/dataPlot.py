@@ -16,10 +16,8 @@ def multi_subPlot( vals1, label1, vals2, label2, vals3 = None, label3 = None, va
         ax3.plot(vals4,color = 'salmon',linewidth = 0.6, label = label4)
         ax3.grid(True)
         ax3.legend()
-    
     ax1.grid(True)
     ax2.grid(True)
-   
     ax1.legend()
     ax2.legend()
     plt.show()

@@ -16,4 +16,4 @@ def OLS_Slope(pricelist, period):
 path = '../RTD_test.csv'
 read = pd.read_csv(path)
 close = list(read.CLOSE)
-indicator = OLS_Slope(close[200:1000], 30)
+indicator = OLS_Slope(close[-400:-100], 30)
