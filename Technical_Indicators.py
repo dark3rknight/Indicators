@@ -163,16 +163,16 @@ def Commodity_Channel_Index(close,high,low,period,number_sigma):
 	TP = []
 	for i in range(len(close)):
 		TP.append((high[i] + low[i] + close[i])/3)
-	CCI = [close[0]]*(period)
-	for i in range(period,len(close)):
-		current_sma = sma(close[:i+1],period)
+	CCI = [None]*(period)
+	for i in range(period,len()):
+		current_sma = sma(TP[:i+1],period)
 		TPsum = 0
 		for j in range(period):
 			TPsum = TPsum + math.fabs(TP[i-j]-current_sma)
-		Deviation = TPsum/period
+		Deviation = TPsum/float(period)
 		CCI.append((TP[i]-current_sma)/(0.015*Deviation))
 	multi_subPlot(close,'price',CCI,'CCI')
-	return CCI
+
 
 def bollinger(close,period,number_sigma):
 	middle = [close[0]]*(period-1)

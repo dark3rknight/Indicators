@@ -10,16 +10,14 @@ def cci(pricelist,high,low,period,number_sigma):
 	TP = []
 	for i in range(len(pricelist)):
 		TP.append((high[i] + low[i] + pricelist[i])/3)
-	CCI = [pricelist[0]]*(period)
+	CCI = [None]*(period)
 	for i in range(period,len(pricelist)):
-		current_sma = sma(pricelist[:i+1],period)
+		current_sma = sma(TP[:i+1],period)
 		TPsum = 0
 		for j in range(period):
 			TPsum = TPsum + math.fabs(TP[i-j]-current_sma)
-		Deviation = TPsum/period
-		print(Deviation)
+		Deviation = TPsum/float(period)
 		CCI.append((TP[i]-current_sma)/(0.015*Deviation))
-	print(len(CCI))
 	multi_subPlot(pricelist,'price',CCI,'CCI')
 
 read = pd.read_csv('../RTD_test.csv')
