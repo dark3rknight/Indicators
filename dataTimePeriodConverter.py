@@ -1,6 +1,7 @@
 import math
 import pandas as pd
 import csv
+import os
 
 def is_number(s):
     try:
@@ -9,12 +10,8 @@ def is_number(s):
     except ValueError:
         return False
 
-def data_cleaning(tValue,date,time,popen,high,low,close):
-	date.reverse()
-	time.reverse()
-	close.reverse()
+def data_cleaning(file,tValue,date,time,close):
 	previous_date = date[0]
-	formatted_open = []
 	formatted_high = []
 	formatted_low = []
 	formatted_close = []
@@ -26,10 +23,9 @@ def data_cleaning(tValue,date,time,popen,high,low,close):
 	counter = 0
 	for i in range(len(date)-tValue):
 		if i == counter:
-			formatted_open.append(popen[i])
 			flag = 0
-			maximum = high[i]
-			minimum = low[i]
+			maximum = close[i]
+			minimum = close[i]
 			for j in range(tValue):
 				maximum = max(close[i+j],maximum)
 				minimum = min(close[i+j],minimum)
@@ -44,12 +40,17 @@ def data_cleaning(tValue,date,time,popen,high,low,close):
 		ret = (float(formatted_close[i]) - float(formatted_close[i-1]))/float(formatted_close[i-1])
 		returns.append(ret)
 		logreturns.append(math.log(1+ret))
-	rows = zip(formatted_date,formatted_time,formatted_open,formatted_high,formatted_low,formatted_close,returns,logreturns)
-	with open('RTD_test_EICHER.csv', 'w+') as f:
+	rows = zip(formatted_date,formatted_time,formatted_high,formatted_low,formatted_close,returns,logreturns)
+	with open('./AXIS14', 'w+') as f:
 		writer = csv.writer(f)
-		writer.writerow(['DATE','TIME','OPEN','HIGH','LOW','CLOSE','RETURNS','LOGRETURNS'])
+		writer.writerow(['DATE','TIME','HIGH','LOW','CLOSE','RETURNS','LOGRETURNS'])
 		writer.writerows(rows)
 
-read = pd.read_csv('./NSE EICHERMOT EQ.csv')
-	
-data_cleaning(30,list(read.DATE),list(read.TIME),list(read.OPEN),list(read.HIGH),list(read.LOW),list(read.CLOSE))
+path = "./AXISBANK.csv"
+#files = os.listdir(path)
+#print(len(files))
+#for file in files:
+file = path
+read = pd.read_csv(file)
+print(file)
+data_cleaning(file,6,list(read.DATE),list(read.TIME),list(read.CLOSE))
