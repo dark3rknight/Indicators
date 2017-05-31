@@ -53,10 +53,11 @@ datalist = ['12data','13data','14data','15data','16data']
 #files = os.listdir(path)
 #print(len(files))
 for dataset in datalist:
-	path = ('./5 min yearly/5 min ' + dataset +'/')
+	path = ('../data/5min yearly/5min ' + dataset +'/')
 	for i in range(len(Stock_list)):
 		file = path + Stock_list[i] +'.csv'
 		name = Stock_list[i] + dataset
-		#if os.path.isfile(file):
-		read = pd.read_csv(file)
-		data_cleaning(name,6,list(read.DATE),list(read.TIME),list(read.CLOSE))
+		if os.path.isfile(file):
+			print(name)
+			read = pd.read_csv(file)
+			data_cleaning(name,6,list(read.DATE),list(read.TIME),list(read.CLOSE))
