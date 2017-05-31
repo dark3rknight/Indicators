@@ -29,13 +29,14 @@ for file in files:
 		close = list(read.CLOSE)
 		returns = list(read.RETURNS)
 		
-		indicator = OLS_Slope(close, 30)
+		indicator = OLS_Slope(close, 45)
 
 		equity = [0]
 		drawdown = [0]
 		trades = 0
 		old_mutiplier = 0
 		multi = [0]
+
 		for i in range(1,len(close)-1):
 			if indicator[i] > 0:
 				multiplier = 1
@@ -53,11 +54,11 @@ for file in files:
 				new_equity = equity[-1]
 			equity.append(new_equity)
 			drawdown.append(max(equity)-new_equity)
-			list1 = [close[i],equity[i],multi[i]]
+			#list1 = [close[i],equity[i],multi[i]]
 			
-			with open('../slope_results/'+file, 'a') as f:
-				writer = csv.writer(f)
-				writer.writerow(list1)
+			#with open('../slope_results/'+file, 'a') as f:
+			#	writer = csv.writer(f)
+			#	writer.writerow(list1)
 		list1 = [file,equity[-1],max(drawdown)]
 		with open('../slope_results.csv','a') as f:
 			writer = csv.writer(f)
