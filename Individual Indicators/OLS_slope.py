@@ -30,7 +30,7 @@ for file in files:
 		returns = list(read.RETURNS)
 		
 		indicator = OLS_Slope(close, 15)
-		indicator2 = OLS_Slope(close, 60)
+		#ndicator2 = OLS_Slope(close, 60)
 		equity = [0]
 		drawdown = [0]
 		trades = 0
@@ -38,9 +38,9 @@ for file in files:
 		multi = [0]
 
 		for i in range(1,len(close)-1):
-			if indicator[i] > 0 and indicator2[i] > 0:
+			if indicator[i] > 0: # and indicator2[i] > 0:
 				multiplier = 1
-			elif indicator[i] < 0 and indicator2[i] < 0 :
+			elif indicator[i] < 0 : # and indicator2[i] < 0 :
 				multiplier = -1
 			else:
 				multiplier = 0
