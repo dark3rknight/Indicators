@@ -29,8 +29,8 @@ for file in files:
 		close = list(read.CLOSE)
 		returns = list(read.RETURNS)
 		
-		indicator = OLS_Slope(close, 45)
-
+		indicator = OLS_Slope(close, 15)
+		indicator2 = OLS_Slope(close, 60)
 		equity = [0]
 		drawdown = [0]
 		trades = 0
@@ -38,9 +38,9 @@ for file in files:
 		multi = [0]
 
 		for i in range(1,len(close)-1):
-			if indicator[i] > 0:
+			if indicator[i] > 0 and indicator2[i] > 0:
 				multiplier = 1
-			elif indicator[i] < 0:
+			elif indicator[i] < 0 and indicator2[i] < 0 :
 				multiplier = -1
 			else:
 				multiplier = 0
@@ -54,7 +54,7 @@ for file in files:
 				new_equity = equity[-1]
 			equity.append(new_equity)
 			drawdown.append(max(equity)-new_equity)
-			#list1 = [close[i],equity[i],multi[i]]
+			list1 = [close[i],equity[i],multi[i]]
 			
 			#with open('../slope_results/'+file, 'a') as f:
 			#	writer = csv.writer(f)
