@@ -16,6 +16,6 @@ def calc_ema(data, window):
 
 def get_all_EMAs(data, window):
     EMA = [None] * ((window))
-    for i in range(window, len(data)):
+    for i in range(window+1, len(data)):
         EMA.append(calc_ema(data[:i], window))
     return EMA

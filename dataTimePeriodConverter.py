@@ -37,8 +37,11 @@ def data_cleaning(name,tValue,date,time,close):
 			formatted_high.append(maximum)
 			formatted_low.append(minimum)
 	for i in range(1,len(formatted_close)):
-		ret = (float(formatted_close[i]) - float(formatted_close[i-1]))/float(formatted_close[i-1])
-		returns.append(ret)
+		try:
+			ret = (float(formatted_close[i]) - float(formatted_close[i-1]))/float(formatted_close[i-1])
+			returns.append(ret)
+		except:
+			returns.append(0)
 		logreturns.append(math.log(1+ret))
 	rows = zip(formatted_date,formatted_time,formatted_high,formatted_low,formatted_close,returns,logreturns)
 	with open('./slope_test/'+name +'.csv', 'w+') as f:
@@ -49,7 +52,7 @@ def data_cleaning(name,tValue,date,time,close):
 read = pd.read_csv('./Slope_test.csv')
 Stock_list = list(read.Stocks)
 
-datalist = ['14data','15data','16data']
+datalist = ['12data','13data']
 #files = os.listdir(path)
 #print(len(files))
 for dataset in datalist:

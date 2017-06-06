@@ -164,7 +164,7 @@ def Commodity_Channel_Index(close,high,low,period,number_sigma):
 	for i in range(len(close)):
 		TP.append((high[i] + low[i] + close[i])/3)
 	CCI = [None]*(period)
-	for i in range(period,len()):
+	for i in range(period,len(TP)):
 		current_sma = sma(TP[:i+1],period)
 		TPsum = 0
 		for j in range(period):
