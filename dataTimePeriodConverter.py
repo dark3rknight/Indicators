@@ -52,7 +52,7 @@ def data_cleaning(name,tValue,date,time,close):
 read = pd.read_csv('./Slope_test.csv')
 Stock_list = list(read.Stocks)
 
-datalist = ['12data','13data']
+datalist = ['13data','14data','15data','16data','17data']
 #files = os.listdir(path)
 #print(len(files))
 for dataset in datalist:

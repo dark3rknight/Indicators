@@ -90,14 +90,18 @@ def OLS_Slope(pricelist, period):
 	return OLS_Slope
 
 def Technical_Strat():
+	fixedcost = 1/10000
+	slippage = 3/10000
 	path = '../slope_test/'
 	files = os.listdir(path)
 	list1 = []
 	list2 = []
 	list3 = []
 	list4 = []
+	list5 = []
+	list6 = []
 	list7 = []
-	for i in range(2,len(files)):
+	for i in range(1,len(files)):
 		file = files[i]
 		read = pd.read_csv(path + file)
 		#try:
@@ -122,12 +126,17 @@ def Technical_Strat():
 		counter = 1
 		each_trade = []
 		each_trade_pl = []
-		equity = [0]
-		drawdown = [0]
+		equity = [0,0]
+		drawdown = [0,0]
 		trades = 0
 		old_multiplier = 0
-		multi = [0]
-		for i in range(1,len(close)):
+		multi = [0,0]
+		final_signal = [0,0]
+		flag = 0
+		fill_counter = 0
+		position_counter = 0
+		final_flag = 0
+		for i in range(2,len(close)):
 			if psar_trend[i-1] == 'rising' and slope[i] > 0 and crossover_1[i] > 0: # and indicator2[i] > 0:
 				multiplier = 1
 			elif psar_trend[i-1] == 'falling' and slope[i] < 0 and crossover_1[i] < 0:
@@ -137,14 +146,34 @@ def Technical_Strat():
 			cost = 0
 			if multiplier != old_multiplier:
 				trades = trades + math.fabs(multiplier-old_multiplier)
-				cost = math.fabs(multiplier - old_multiplier)*1/10000
-			old_multiplier = multiplier
+				cost = math.fabs(multiplier - old_multiplier)*(fixedcost+slippage)
 			multi.append(multiplier)
+
+			if multiplier != old_multiplier and multiplier != 0:
+				if close[i-1] <= high[i]  and multiplier == -1:
+					final_signal.append(multiplier)
+				elif close[i-1] >= low[i] and multiplier == 1:
+					final_signal.append(multiplier)	
+				else:
+					final_signal.append(old_multiplier)
+			elif old_multiplier != multiplier and multiplier == 0:
+				if close[i-1] <= high[i]  and old_multiplier == 1:
+					final_signal.append(multiplier)
+				elif close[i-1] >= low[i] and old_multiplier == -1:
+					final_signal.append(multiplier)	
+				else:
+					final_signal.append(old_multiplier)
+			else:
+				final_signal.append(multiplier)
+
 			if is_number(returns[i]):
 				new_equity = equity[-1]+returns[i]*multi[i] - cost
 			else:
 				new_equity = equity[-1] - cost
 			equity.append(new_equity)
+			
+			old_multiplier = multiplier
+			
 			drawdown.append(max(equity)-new_equity)
 			if psar_trend[i-1] == 'rising':
 				psar_tr = 1
@@ -171,53 +200,79 @@ def Technical_Strat():
 				#print('check')
 				each_trade.append(counter+1)
 				each_trade_pl.append(equity[i]-equity[i-counter-1])
-
-			'''if (len(each_trade_pl)>0):
-				list1 = [close[i],equity[i],multi[i],slope_tr,psar_tr,counter,each_trade_pl[-1]]
-			else:'''
-			#list5 = [high[i],low[i],close[i],multi[i],slope[i],slope_tr,psar[i],psar_tr,crossover_1[i],equity[i],counter]
-			#with open('../slope_results/'+file, 'a') as f:
-			#	writer = csv.writer(f)
-			#	writer.writerow(list5)
+			if multi[i] != 0 and flag == 1:
+				fill_counter = fill_counter + 1
+			if multi[i] != 0:
+				position_counter = position_counter + 1
+			if (len(each_trade_pl)>0):
+				list9 = [high[i],low[i],close[i],multi[i],slope_tr,psar_tr,crossover_1[i],equity[i],counter,final_signal[i],each_trade_pl[-1]]
+			else:
+				list9 = [high[i],low[i],close[i],multi[i],slope_tr,psar_tr,crossover_1[i],equity[i],counter,final_signal[i]]
+			with open('../slope_results/'+file, 'a') as f:
+				writer = csv.writer(f)
+				writer.writerow(list9)
 		#print(sum(each_trade)/len(each_trade),sum(each_trade_pl),equity[-1],len(each_trade),trades/2)
 		number_of_trades = len(each_trade)
 		profitable_trades = sum(1 for a in each_trade_pl if a>0)
 		loss_trades = sum(1 for a in each_trade_pl if a<0)
-		list6 = [file[:-8],equity[-1],max(drawdown),number_of_trades,profitable_trades]
+		list8 = [file[:-8],equity[-1],max(drawdown),profitable_trades/number_of_trades]
 		with open('../slope_results_cost.csv','a') as f:
 			writer = csv.writer(f)
-			writer.writerow(list6)
+			writer.writerow(list8)
 		#print(file[:-10],file[-10:-4])
-		if file[-10:-4] == '12data':
+		if file[-10:-4] == '13data':
 			list1.append([file[:-10]] + equity)
+			#if len(equity) < 3086:
 			print(file[:-8],equity[-1],max(drawdown),len(equity))
-		elif file[-10:-4] == '13data':
+		elif file[-10:-4] == '14data':
 			list2.append([file[:-10]] + equity)
+			#if len(equity) != 3027:
+			print(file[:-8],equity[-1],max(drawdown),len(equity))
+		elif file[-10:-4] == '15data':
+			list3.append([file[:-10]] + equity)
+			#if len(equity) != 3087:
 			print(file[:-8],equity[-1],max(drawdown),len(equity))
 		elif file[-10:-4] == '16data':
-			list3.append([file[:-10]] + equity)
-		list4.append([file[:-8]] + equity)
+			list4.append([file[:-10]] + equity)
+			#if len(equity) != 3063:
+			print(file[:-8],equity[-1],max(drawdown),len(equity))
+		elif file[-10:-4] == '17data':
+			list5.append([file[:-10]] + equity)
+			#if len(equity) != 862:
+			print(file[:-8],equity[-1],max(drawdown),len(equity))
+		list6.append([file[:-8]] + equity)
 		list7.append([file[:-8]] + close)
 		list7.append([file[:-8]] + equity)
 		list7.append([file[:-8]] + multi)
-	
+
+
 	list1 = list(map(list,zip(*list1)))
 	for row in list1:
-		with open('../12dataresults.csv',"a") as fp:
+		with open('../13dataresults.csv',"a") as fp:
 			wr = csv.writer(fp)
 			wr.writerow(row)
 	list2 = list(map(list,zip(*list2)))
 	for row in list2:
-		with open('../13dataresults.csv',"a") as fp:
+		with open('../14dataresults.csv',"a") as fp:
 			wr = csv.writer(fp)
 			wr.writerow(row)
-'''	list3 = list(map(list,zip(*list3)))
+	list3 = list(map(list,zip(*list3)))
 	for row in list3:
-		with open('../16dataresults.csv',"a") as fp:
+		with open('../15dataresults.csv',"a") as fp:
 			wr = csv.writer(fp)
 			wr.writerow(row)
 	list4 = list(map(list,zip(*list4)))
 	for row in list4:
+		with open('../16dataresults.csv',"a") as fp:
+			wr = csv.writer(fp)
+			wr.writerow(row)
+	list5 = list(map(list,zip(*list5)))
+	for row in list5:
+		with open('../17dataresults.csv',"a") as fp:
+			wr = csv.writer(fp)
+			wr.writerow(row)
+	list6 = list(map(list,zip(*list6)))
+	for row in list6:
 		with open('../combined_sloperesults.csv',"a") as fp:
 			wr = csv.writer(fp)
 			wr.writerow(row)
@@ -226,10 +281,5 @@ def Technical_Strat():
 		with open('../make_graph.csv',"a") as fp:
 			wr = csv.writer(fp)
 			wr.writerow(row)
-		#with open('../slope_results.csv','a') as f:
-		#	writer = csv.writer(f)
-		#	writer.writerow(list1)'''
-	#except:
-		#	print(path+file)	
-
+	
 Technical_Strat()
